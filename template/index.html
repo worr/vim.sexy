@@ -15,6 +15,8 @@
 	<meta name="twitter:creator" content="@worr">
 	<meta name="twitter:title" content="Next-level robot-future text editing with Vim">
 	<meta name="twitter:description" content="Your text editor is weak. Vim is the bad-mofo omakase editor that will kick you in the ass and optimize your workflow. Take it to the next level bro">
+
+	<script async src="/js/vim.js" type="text/javascript"></script>
 </head>
 <body>
 	<nav id="nav-bar">
@@ -29,12 +31,14 @@
 		</ul>
 	</nav>
 
+	<div id="flash"></div>
+
 	<section id="big-header">
 		<h1>Code Beautifully</h1>
 	</section>
 
+	<a id="web"></a>
 	<section id="web-section" class="odd">
-		<a id="web"></a>
 		<div class="info-pane">
 			<div class="first-column column">
 				<h2>Web-Ready</h2>
@@ -68,7 +72,7 @@
 				</p>
 			</div>
 			<div class="second-column column image-column">
-				<img id="vim-img" class="image" src="/img/vim400x307.png" alt="vim screenshot" width=400>
+				<img id="vim-img" class="image" src="/img/vim400x307.png" alt="vim screenshot" width="400" height="307">
 			</div>
 			<div style="clear: both;"></div>
 		</div>
@@ -78,7 +82,7 @@
 	<section id="features-section" class="even">
 		<div class="info-pane">
 			<div class="first-column column image-column">
-				<img id="vim-img" class="image" src="http://upload.wikimedia.org/wikipedia/commons/9/9f/Vimlogo.svg" alt="vim logo" height="300">
+				<img id="vim-img" class="image" src="http://upload.wikimedia.org/wikipedia/commons/9/9f/Vimlogo.svg" alt="vim logo" width="329" height="300">
 			</div>
 			<div class="second-column column">
 				<h2>Full-stack Features</h2>
@@ -119,7 +123,7 @@
 				</ul>
 			</div>
 			<div class="second-column column image-column">
-				<img id="vim-img" class="image" src="/img/plug.png" alt="plug-ins" height="275">
+				<img id="vim-img" class="image" src="/img/plug.png" alt="plug-ins" width="300" height="258">
 			</div>
 		</div>
 		<div style="clear: both;"></div>
@@ -130,13 +134,13 @@
 		<div class="info-pane">
 			<div class="first-column column image-column">
 				<!-- Not my work. All attribution goes to the fine folk listed here: http://en.wikipedia.org/wiki/File:Tux.svg -->
-				<img id="vim-img" class="image" src="http://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="linux logo" height="300">
+				<img id="vim-img" class="image" src="http://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="linux logo" width="259" height="300">
 			</div>
 			<div class="second-column column">
 				<h2>Don't worry, it runs on OSX</h2>
 				<p>
-					Vim not only runs on your dev machine, but it also runs on your Ubuntu Linux servers.
-					This means you can
+					Vim not only runs on your OS X dev machine, but also on your
+					Ubuntu Linux servers.  This means you can
 					<span class="scare-text">crush code in production</span>
 					without sacrificing your
 					<span class="scare-text">editing experience</span>.
@@ -146,32 +150,42 @@
 		</div>
 	</section>
 
-	<a id="charity">
+	<a id="charity"></a>
 	<section class="odd">
 		<div class="info-pane">
 			<div class="first-column column">
 				<h2>Pat yourself on the back</h2>
 				<p>
-					Is your
-					<span class="scare-text">dudebro startup</span>
-					getting flack on Twitter for not being inclusive?
-					Vim donates money to help children in Uganda. 
+					<span class="scare-text">Dudebro startups</span>
+					like yours get shit from
+					<span class="scare-text">angry feminists</span>
+					all the time. Using Vim will put a stop to that.
+					Vim donates money to children living in Uganda. You'll look
+					so accepting and humanitarian just by using Vim, that you won't even have to 
+					think about
+					<span class="scare-text">actual social issues</span>.
+					This leaves you free to go back to solving problems that really
+					matter, like building
+					<span class="scare-text">apps that incentivize breaking up protests</span>
+					or
+					<span class="scare-text">apps that crowd-source date conversations</span>.
 				</p>
 				<p>
-					You can send those
-					<span class="scare-text">angry feminists</span>
-					packing with witty retorts about how you're saving Ugandan children without
-					disrupting your workflow, spending time or money, or even addressing the problem altogether.
+					Don't get me wrong: I know you don't 
+					<span class="scare-text">actually care</span>
+					about human rights and social issues.
+					All that matters is that you
+					<span class="scare-text">look like you care</span>.
 				</p>
 			</div>
 			<div class="second-column column image-column">
-				<img id="vim-img" class="image" src="/img/charity.png" alt="ribbon" height="300">
+				<img id="vim-img" class="image" src="/img/charity.png" alt="ribbon" width="180" height="299">
 			</div>
 			<div style="clear: both;"></div>
 		</div>
 	</section>
 
-	<a id="invite">
+	<a id="invite"></a>
 	<section class="even">
 		<div class="info-pane">
 			<h2>Get an exclusive invite</h2>
@@ -187,7 +201,8 @@
 				editor experience.
 			</p>
 
-			<form method="post" action="/">
+			<script type="text/javascript">var RecaptchaOptions = { theme : 'clean' };</script>
+			<form id="email-form">
 				<input type="hidden" name="csrf_token" value="{{ .token }}">
 				<input type="email" id="email" name="email" placeholder="dudebro@javascript.ninja">
 				<script type="text/javascript"
