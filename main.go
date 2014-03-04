@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"code.google.com/p/gcfg"
 	"code.google.com/p/go-uuid/uuid"
+	"encoding/json"
 	"github.com/dpapathanasiou/go-recaptcha"
 	"github.com/justinas/nosurf"
 	"github.com/worr/chrooter"
@@ -31,6 +32,13 @@ type Config struct {
 	}
 }
 
+type PostData struct {
+	Email string
+	Csrf_token string
+	Recaptcha_challenge_field string
+	Recaptcha_response_field string
+}
+
 var t = template.Must(template.ParseFiles("template/index.html"))
 var emailTemplate = txttemplate.Must(txttemplate.New("email").Parse("Here is your exclusive Vim download link: http://www.vim.org/download.php?code={{.Code}}"))
 var c = make(chan string)
@@ -38,13 +46,25 @@ var conf Config
 
 // Default handler
 func dispatch(w http.ResponseWriter, r *http.Request) {
-	context := map[string]string{
-		"token": nosurf.Token(r),
-	}
+	context := map[string]string{}
 
 	if r.Method == "POST" {
-		context["email"] = r.FormValue("email")
-		if !recaptcha.Confirm(r.RemoteAddr, r.FormValue("recaptcha_challenge_field"), r.FormValue("recaptcha_response_field")) {
+		body := make([]byte, 256)
+
+		if _, err := r.Body.Read(body); err != nil {
+			http.Error(w, "Error reading body", http.StatusBadRequest)
+			return
+		}
+
+		var data PostData
+		if err := json.Unmarshal(body, &data); err != nil {
+			http.Error(w, "Can't parse JSON", http.StatusBadRequest)
+			return
+		}
+
+		context["email"] = data.Email
+		context["token"] = data.Csrf_token
+		if !recaptcha.Confirm(r.RemoteAddr, data.Recaptcha_challenge_field, data.Recaptcha_response_field) {
 			http.Error(w, "Failed captcha", http.StatusBadRequest)
 			return
 		}
