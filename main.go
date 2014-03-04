@@ -12,6 +12,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"net/mail"
 	"net/smtp"
 	txttemplate "text/template"
 )
@@ -78,12 +79,21 @@ func email() {
 		}
 
 		buf := bytes.NewBuffer(make([]byte, 100))
-		if err := emailTemplate.Execute(buf, struct{ Code string }{uuid.NewUUID().String()}); err == nil {
-			log.Println("Email sent")
-			conf.Mail.password.Decrypt()
-			smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{addr}, buf.Bytes())
-			conf.Mail.password.Encrypt()
+		if err := emailTemplate.Execute(buf, struct{ Code string }{uuid.NewUUID().String()}); err != nil {
+			log.Printf("Can't execute email template: %v", err)
+			continue
 		}
+
+		var emailAddr *mail.Address
+		var err error
+		if emailAddr, err = mail.ParseAddress(addr); err != nil {
+			log.Printf("Failed to send email to %v: %v", emailAddr.String(), err)
+			continue
+		}
+
+		conf.Mail.password.Decrypt()
+		smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{emailAddr.String()}, buf.Bytes())
+		conf.Mail.password.Encrypt()
 	}
 }
 
