@@ -6,6 +6,7 @@ import (
 	"code.google.com/p/go-uuid/uuid"
 	"github.com/dpapathanasiou/go-recaptcha"
 	"github.com/justinas/nosurf"
+	"github.com/worr/chrooter"
 	"github.com/worr/secstring"
 	"html/template"
 	"log"
@@ -91,6 +92,11 @@ func main() {
 		log.Fatalf("Can't read config file: %v", err)
 	}
 
+	if err := chrooter.Chroot("www", "/var/chroot/vim.sexy"); err != nil {
+		log.Fatalf("Can't chroot: %v", err)
+	}
+
+
 	var err error
 	if conf.Mail.password, err = secstring.FromString(&conf.Mail.Password); err != nil {
 		log.Fatal(err)
@@ -103,5 +109,7 @@ func main() {
 	http.HandleFunc("/", dispatch)
 	csrf := nosurf.New(http.DefaultServeMux)
 	csrf.SetFailureHandler(http.HandlerFunc(failedCSRF))
-	http.ListenAndServe("localhost:8000", csrf)
+	if err = http.ListenAndServe("127.0.0.1:8000", csrf); err != nil {
+		log.Fatalf("Cannot listen: %v", err)
+	}
 }
