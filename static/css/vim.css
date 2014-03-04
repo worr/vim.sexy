@@ -1,0 +1,225 @@
+#nav-bar {
+	position: fixed!important;
+	display: block!important;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100px;
+	z-index: 100;
+	background-color: #fdfdfd;
+	font-family: 'Open Sans', sans-serif;
+}
+
+ul#nav {
+	display: block;
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#nav li {
+	position: relative;
+	display: block;
+	float: left;
+	padding-top: 29px;
+	padding-bottom: 29px;
+	padding-left: 10px;
+	padding-right: 10px;
+	height: 100%;
+}
+
+#nav-bar a {
+	position: relative;
+	display: block;
+	float: left;
+	text-decoration: none;
+	color: #333;
+}
+
+li.nav-item a {
+	position: relative;
+	display: block;
+	float: left;
+	font-size: 30px;
+}
+
+li.nav-item:hover {
+	background-color: #eee;
+}
+
+a.home {
+	font-size: 60px;
+	margin-left: 40px;
+	margin-right: 40px;
+}
+
+section {
+	font-family: 'Montserrat', sans-serif;
+	color: #333;
+	left: 0;
+}
+
+section#big-header {
+	margin-top: 200px;
+	font-family: 'Montserrat', sans-serif;
+	color: #fdfdfd;
+}
+
+section#big-header h1 {
+	font-size: 14em;
+	text-align: center;
+}
+
+
+section.odd {
+	background-color: #fdfdfd;
+}
+
+section.even {
+	background-color: #eee;
+}
+
+h2 {
+	text-align: center;
+	font-size: 3em;
+	font-weight: 100;
+}
+
+body {
+	background-image: url("/img/wsh_fucked_compressed.png");
+	background-repeat: none;
+	margin: 0;
+}
+
+p {
+	margin: 10px;
+}
+
+#vim-img {
+	margin: 40px;
+	display: inline-block;
+}
+
+.info-pane {
+	width: 960px;
+	margin: auto;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.scare-text {
+	font-weight: 700;
+}
+
+.column {
+	width: 50%;
+	text-align: justify;
+}
+
+.first-column {
+	float: left;
+}
+
+.second-column {
+	float: right;
+}
+
+.image-column {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.strikethrough {
+	text-decoration: line-through;
+}
+
+input#email {
+	display: block;
+	width: 100%;
+	height: 50px;
+	font-size: 2em;
+	margin: 5px;
+}
+
+input#submit {
+	visibility: hidden;
+}
+
+div#recaptcha {
+	text-align: center;
+}
+
+div#flash {
+	position: fixed;
+	top: 120px;
+	left: 20%;
+	width: 60%;
+	color: #fdfdfd;
+	background: #900;
+	opacity: 0;
+	text-align: center;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 20px;
+	vertical-align: middle;
+}
+
+/* Remove headers */
+@media all and (max-width: 1220px) {
+	ul#nav {
+		display: none;
+	}
+
+	section#big-header h1 {
+		font-size: 10em;
+		text-align: center;
+	}
+}
+
+@media all and (max-width: 960px) {
+	.column {
+		width: 100% !important;
+		clear: none !important;
+		text-align: left;
+	}
+
+	img.image {
+		display: none!important;
+	}
+
+	.info-pane {
+		width: 100%;
+	}
+
+	section#big-header h1 {
+		font-size: 6em;
+		text-align: center;
+	}
+}
+
+/* Mobile site */
+@media all and (min-width: 320px) and (max-width: 480px) {
+	section#big-header h1 {
+		font-size: 2.2em;
+		text-align: center;
+	}
+
+	h2 {
+		font-size: 2em;
+		text-align: center;
+	}
+
+	section {
+		font-size: 1.5em;
+	}
+
+	a.home {
+		font-size: 40px;
+		margin-left: 40px;
+		margin-right: 40px;
+	}
+
+	#nav-bar {
+		height: 60px;
+	}
+}
