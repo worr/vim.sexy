@@ -84,7 +84,7 @@ var vim = (function() {
 				if (req.readyState !== 4 || req.status != 200) {
 					if (req.responseText) {
 						try {
-							errorFlash(JSON.parse(req.responseText));
+							errorFlash(req.responseText);
 						} catch(e) {
 							errorFlash(req.responseText);
 						}
@@ -97,7 +97,11 @@ var vim = (function() {
 
 				clearFields();
 			};
-			req.send(JSON.stringify(data));
+			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			req.send("email=" + encodeURIComponent(data["email"]) +
+					 "&csrf_token=" + encodeURIComponent(data["csrf_token"]) +
+					 "&recaptcha_challenge_field=" + encodeURIComponent(data["recaptcha_challenge_field"]) +
+					 "&recaptcha_response_field=" + encodeURIComponent(data["recaptcha_response_field"]));
 
 			return false;
 		});
