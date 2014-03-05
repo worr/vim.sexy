@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"code.google.com/p/gcfg"
 	"code.google.com/p/go-uuid/uuid"
+	"encoding/base64"
 	"fmt"
 	"github.com/dpapathanasiou/go-recaptcha"
 	"github.com/justinas/nosurf"
@@ -107,7 +108,7 @@ func email() {
 			continue
 		}
 
-		msg += fmt.Sprintf("\r\n%v\r\n", buf.String())
+		msg += base64.StdEncoding.EncodeToString(buf.Bytes())
 
 		conf.Mail.password.Decrypt()
 		if err = smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{emailAddr.Address}, []byte(msg)); err != nil {
