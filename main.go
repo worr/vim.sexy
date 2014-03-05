@@ -99,9 +99,10 @@ func email() {
 
 		msg := ""
 		for key, val := range(headers) {
-			msg += fmt.Sprintf("%v: %v\r\n\r\n", key, val)
+			msg += fmt.Sprintf("%v: %v\r\n", key, val)
 		}
 
+		msg += "\r\n"
 		buf := bytes.NewBuffer(make([]byte, 100))
 		if err := emailTemplate.Execute(buf, struct{ Code string }{uuid.NewUUID().String()}); err != nil {
 			log.Printf("Can't execute email template: %v", err)
