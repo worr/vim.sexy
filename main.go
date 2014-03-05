@@ -99,7 +99,7 @@ func email() {
 
 		msg := ""
 		for key, val := range(headers) {
-			msg += fmt.Sprintf("%v: %v\r\n", key, val)
+			msg += fmt.Sprintf("%v: %v\r\n\r\n", key, val)
 		}
 
 		buf := bytes.NewBuffer(make([]byte, 100))
