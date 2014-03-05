@@ -87,7 +87,7 @@ var vim = (function() {
 						errorFlash(req.statusText);
 					}
 				} else {
-					successFlash("Invite sent");
+					successFlash("Invite request received");
 				}
 
 				clearFields();
