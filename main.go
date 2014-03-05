@@ -87,12 +87,15 @@ func email() {
 		var emailAddr *mail.Address
 		var err error
 		if emailAddr, err = mail.ParseAddress(addr); err != nil {
-			log.Printf("Failed to send email to %v: %v", emailAddr.String(), err)
+			log.Printf("Failed to send email to %v: %v", emailAddr.Address, err)
 			continue
 		}
 
 		conf.Mail.password.Decrypt()
-		smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{emailAddr.String()}, buf.Bytes())
+		if err = smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{emailAddr.Address}, buf.Bytes()); err != nil {
+			log.Printf("Failed to send email to %v: %v", emailAddr.Address, err)
+			continue
+		}
 		conf.Mail.password.Encrypt()
 	}
 }
