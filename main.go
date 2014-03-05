@@ -136,8 +136,7 @@ func main() {
 
 	go email()
 
-	http.HandleFunc("/", dispatch)
-	csrf := nosurf.New(http.DefaultServeMux)
+	csrf := nosurf.New(http.HandleFunc("/", dispatch))
 	cookie := http.Cookie{HttpOnly: true}
 	csrf.SetBaseCookie(cookie)
 	csrf.SetFailureHandler(http.HandlerFunc(failedCSRF))
