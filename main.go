@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"code.google.com/p/gcfg"
 	"code.google.com/p/go-uuid/uuid"
-	"encoding/base64"
 	"fmt"
 	"github.com/dpapathanasiou/go-recaptcha"
 	"github.com/justinas/nosurf"
@@ -95,21 +94,19 @@ func email() {
 		headers["Subject"] = "Your Vim invite is ready"
 		headers["MIME-Version"] = "1.0"
 		headers["Content-Type"] = "text/plain; charset=\"utf-8\""
-		headers["Content-Transfer-Encoding"] = "base64"
 
 		msg := ""
 		for key, val := range(headers) {
 			msg += fmt.Sprintf("%v: %v\r\n", key, val)
 		}
 
-		msg += "\r\n"
 		buf := bytes.NewBuffer(make([]byte, 100))
 		if err := emailTemplate.Execute(buf, struct{ Code string }{uuid.NewUUID().String()}); err != nil {
 			log.Printf("Can't execute email template: %v", err)
 			continue
 		}
 
-		msg += base64.StdEncoding.EncodeToString(buf.Bytes())
+		msg += fmt.Sprintf("\r\n%v\r\n", buf.String())
 
 		conf.Mail.password.Decrypt()
 		if err = smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{emailAddr.Address}, []byte(msg)); err != nil {
