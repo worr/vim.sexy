@@ -138,6 +138,8 @@ func main() {
 
 	http.HandleFunc("/", dispatch)
 	csrf := nosurf.New(http.DefaultServeMux)
+	cookie := http.Cookie{HttpOnly: true}
+	csrf.SetBaseCookie(cookie)
 	csrf.SetFailureHandler(http.HandlerFunc(failedCSRF))
 	if err = http.ListenAndServe("127.0.0.1:8000", csrf); err != nil {
 		log.Fatalf("Cannot listen: %v", err)
