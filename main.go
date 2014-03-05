@@ -100,13 +100,13 @@ func email() {
 			msg += fmt.Sprintf("%v: %v\r\n", key, val)
 		}
 
-		buf := bytes.NewBuffer(make([]byte, 100))
+		buf := bytes.NewBuffer(make([]byte, 256))
 		if err := emailTemplate.Execute(buf, struct{ Code string }{uuid.NewUUID().String()}); err != nil {
 			log.Printf("Can't execute email template: %v", err)
 			continue
 		}
 
-		msg += fmt.Sprintf("\r\n%v\r\n", buf.String())
+		msg += fmt.Sprintf("\r\n%v", buf.String())
 
 		conf.Mail.password.Decrypt()
 		if err = smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{emailAddr.Address}, []byte(msg)); err != nil {
