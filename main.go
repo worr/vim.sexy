@@ -87,9 +87,10 @@ func email() {
 			continue
 		}
 
+		fromAddr := mail.Address{Name:"Vim Download Czar", Address: conf.Mail.Email}
 		headers := make(map[string]string)
 		headers["To"] = emailAddr.String()
-		headers["From"] = conf.Mail.Email
+		headers["From"] = fromAddr.String()
 		headers["Date"] = time.Now().String()
 		headers["Subject"] = "Your Vim invite is ready"
 		headers["MIME-Version"] = "1.0"
@@ -100,16 +101,16 @@ func email() {
 			msg += fmt.Sprintf("%v: %v\r\n", key, val)
 		}
 
-		buf := bytes.NewBuffer(make([]byte, 256))
+		buf := bytes.NewBuffer(make([]byte, 0))
 		if err := emailTemplate.Execute(buf, struct{ Code string }{uuid.NewUUID().String()}); err != nil {
 			log.Printf("Can't execute email template: %v", err)
 			continue
 		}
 
-		msg += fmt.Sprintf("\r\n%v", buf.String())
+		msg += fmt.Sprintf("\r\n%s", buf)
 
 		conf.Mail.password.Decrypt()
-		if err = smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{emailAddr.Address}, []byte(msg)); err != nil {
+		if err = smtp.SendMail(conf.Mail.Hostname, auth, fromAddr.Address, []string{emailAddr.Address}, []byte(msg)); err != nil {
 			log.Printf("Failed to send email to %v: %v", emailAddr.Address, err)
 			continue
 		}
