@@ -5,7 +5,6 @@ var vim = (function() {
 
 	var clearFields = function() {
 		document.getElementById("email").value = "";
-		document.getElementsByName("csrf_token")[0].value = "";
 		Recaptcha.reload();
 	}
 
