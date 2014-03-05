@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"code.google.com/p/gcfg"
 	"code.google.com/p/go-uuid/uuid"
+	"fmt"
 	"github.com/dpapathanasiou/go-recaptcha"
 	"github.com/justinas/nosurf"
 	"github.com/worr/chrooter"
@@ -14,6 +15,7 @@ import (
 	"net/http"
 	"net/mail"
 	"net/smtp"
+	"time"
 	txttemplate "text/template"
 )
 
@@ -78,12 +80,6 @@ func email() {
 			continue
 		}
 
-		buf := bytes.NewBuffer(make([]byte, 100))
-		if err := emailTemplate.Execute(buf, struct{ Code string }{uuid.NewUUID().String()}); err != nil {
-			log.Printf("Can't execute email template: %v", err)
-			continue
-		}
-
 		var emailAddr *mail.Address
 		var err error
 		if emailAddr, err = mail.ParseAddress(addr); err != nil {
@@ -91,8 +87,30 @@ func email() {
 			continue
 		}
 
+		headers := make(map[string]string)
+		headers["To"] = emailAddr.String()
+		headers["From"] = conf.Mail.Email
+		headers["Date"] = time.Now().String()
+		headers["Subject"] = "Your Vim invite is ready"
+		headers["MIME-Version"] = "1.0"
+		headers["Content-Type"] = "text/plain; charset=\"utf-8\""
+		headers["Content-Transfer-Encoding"] = "base64"
+
+		msg := ""
+		for key, val := range(headers) {
+			msg += fmt.Sprintf("%v: %v\r\n", key, val)
+		}
+
+		buf := bytes.NewBuffer(make([]byte, 100))
+		if err := emailTemplate.Execute(buf, struct{ Code string }{uuid.NewUUID().String()}); err != nil {
+			log.Printf("Can't execute email template: %v", err)
+			continue
+		}
+
+		msg += fmt.Sprintf("\r\n%v\r\n", buf.String())
+
 		conf.Mail.password.Decrypt()
-		if err = smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{emailAddr.Address}, buf.Bytes()); err != nil {
+		if err = smtp.SendMail(conf.Mail.Hostname, auth, conf.Mail.Email, []string{emailAddr.Address}, []byte(msg)); err != nil {
 			log.Printf("Failed to send email to %v: %v", emailAddr.Address, err)
 			continue
 		}
@@ -108,7 +126,6 @@ func main() {
 	if err := chrooter.Chroot("www", "/var/chroot/vim.sexy"); err != nil {
 		log.Fatalf("Can't chroot: %v", err)
 	}
-
 
 	var err error
 	if conf.Mail.password, err = secstring.FromString(&conf.Mail.Password); err != nil {
