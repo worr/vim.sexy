@@ -81,13 +81,9 @@ var vim = (function() {
 			var req = new XMLHttpRequest();
 			req.open("POST", "/", true);
 			req.onreadystatechange = function() {
-				if (req.readyState !== 4 || req.status != 200) {
+				if (req.status !== 200) {
 					if (req.responseText) {
-						try {
-							errorFlash(req.responseText);
-						} catch(e) {
-							errorFlash(req.responseText);
-						}
+						errorFlash(req.responseText);
 					} else {
 						errorFlash(req.statusText);
 					}
