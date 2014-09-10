@@ -10,6 +10,12 @@
 	font-family: 'Open Sans', sans-serif;
 }
 
+footer {
+	text-align: center;
+	font-family: 'Open Sans', sans-serif;
+	color: #333;
+}
+
 ul#nav {
 	display: block;
 	float: left;
