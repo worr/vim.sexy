@@ -10,10 +10,11 @@
 	font-family: 'Open Sans', sans-serif;
 }
 
-footer {
+footer, footer a {
 	text-align: center;
 	font-family: 'Open Sans', sans-serif;
-	color: #333;
+	color: #fdfdfd;
+	text-decoration: none;
 }
 
 ul#nav {
