@@ -1,0 +1,15 @@
+github.com/dpapathanasiou/go-recaptcha v0.0.0-20190121160230-be5090b17804 h1:gFnPvL9HX+Nrb4M2AwzFYqcwGStxYZpuDpFAqpViBG4=
+github.com/dpapathanasiou/go-recaptcha v0.0.0-20190121160230-be5090b17804/go.mod h1:eovtlS/D2AGk8vy2a9sO4XzOyHMHb8jM+WPsf9pkgFo=
+github.com/google/uuid v1.0.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
+github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/justinas/nosurf v1.1.1 h1:92Aw44hjSK4MxJeMSyDa7jwuI9GR2J/JCQiaKvXXSlk=
+github.com/justinas/nosurf v1.1.1/go.mod h1:ALpWdSbuNGy2lZWtyXdjkYv4edL23oSEgfBT1gPJ5BQ=
+github.com/pborman/uuid v1.2.1 h1:+ZZIw58t/ozdjRaXh/3awHfmWRbzYxJoAdNJxe/3pvw=
+github.com/pborman/uuid v1.2.1/go.mod h1:X/NO0urCmaxf9VXbdlT7C2Yzkj2IKimNn4k+gtPdI/k=
+gitlab.com/worr/chrooter v0.0.0-20140304024844-f915efef8052 h1:LEINAjpR5scw4PLCj8+vVTg9+qtvZNqTSH5QxaBCZ3U=
+gitlab.com/worr/chrooter v0.0.0-20140304024844-f915efef8052/go.mod h1:qYQhejDwzfKM387eyo3XocwZPSKLUmuCJYWunv2VTrw=
+gopkg.in/gcfg.v1 v1.2.3 h1:m8OOJ4ccYHnx2f4gQwpno8nAX5OGOh7RLaaz0pj3Ogs=
+gopkg.in/gcfg.v1 v1.2.3/go.mod h1:yesOnuUOFQAhST5vPY4nbZsb/huCgGGXlipJsBn0b3o=
+gopkg.in/warnings.v0 v0.1.2 h1:wFXVbFY8DY5/xOe1ECiWdKCzZlxgshcYVNkBHstARME=
+gopkg.in/warnings.v0 v0.1.2/go.mod h1:jksf8JmL6Qr/oQM2OXTHunEvvTAsrWBLb6OOjuVWRNI=
