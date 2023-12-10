@@ -2,13 +2,12 @@ package main
 
 import (
 	"bytes"
-	"code.google.com/p/gcfg"
-	"code.google.com/p/go-uuid/uuid"
+	"gopkg.in/gcfg.v1"
+	"github.com/pborman/uuid"
 	"fmt"
 	"github.com/dpapathanasiou/go-recaptcha"
 	"github.com/justinas/nosurf"
-	"github.com/worr/chrooter"
-	"github.com/worr/secstring"
+	"gitlab.com/worr/chrooter"
 	"html/template"
 	"log"
 	"math/rand"
@@ -25,7 +24,6 @@ type Config struct {
 		Username string
 		Password string
 		Hostname string
-		password *secstring.SecString
 	}
 
 	Recaptcha struct {
@@ -46,7 +44,7 @@ func dispatch(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
 		context["email"] = r.FormValue("email")
-		if !recaptcha.Confirm(r.RemoteAddr, r.FormValue("recaptcha_challenge_field"), r.FormValue("recaptcha_response_field")) {
+		if res, err := recaptcha.Confirm(r.RemoteAddr, r.FormValue("recaptcha_response_field")); err != nil || !res {
 			http.Error(w, "Failed captcha", http.StatusBadRequest)
 			return
 		}
@@ -72,7 +70,7 @@ func failedCSRF(w http.ResponseWriter, r *http.Request) {
 
 // Pulls email off of the channel and possibly sends download codes
 func email() {
-	auth := smtp.PlainAuth("", conf.Mail.Username, string(conf.Mail.password.String), conf.Mail.Hostname)
+	auth := smtp.PlainAuth("", conf.Mail.Username, conf.Mail.Password, conf.Mail.Hostname)
 
 	for addr := range c {
 		// Exclusivity
@@ -109,12 +107,10 @@ func email() {
 
 		msg += fmt.Sprintf("\r\n%s", buf)
 
-		conf.Mail.password.Decrypt()
 		if err = smtp.SendMail(conf.Mail.Hostname, auth, fromAddr.Address, []string{emailAddr.Address}, []byte(msg)); err != nil {
 			log.Printf("Failed to send email to %v: %v", emailAddr.Address, err)
 			continue
 		}
-		conf.Mail.password.Encrypt()
 	}
 }
 
@@ -127,11 +123,6 @@ func main() {
 		log.Fatalf("Can't chroot: %v", err)
 	}
 
-	var err error
-	if conf.Mail.password, err = secstring.FromString(&conf.Mail.Password); err != nil {
-		log.Fatal(err)
-	}
-
 	recaptcha.Init(conf.Recaptcha.Private)
 
 	go email()
@@ -140,7 +131,7 @@ func main() {
 	cookie := http.Cookie{HttpOnly: true}
 	csrf.SetBaseCookie(cookie)
 	csrf.SetFailureHandler(http.HandlerFunc(failedCSRF))
-	if err = http.ListenAndServe("127.0.0.1:8000", csrf); err != nil {
+	if err := http.ListenAndServe("127.0.0.1:8000", csrf); err != nil {
 		log.Fatalf("Cannot listen: %v", err)
 	}
 }
